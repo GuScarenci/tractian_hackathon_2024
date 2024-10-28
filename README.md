@@ -8,13 +8,14 @@ No estágio atual, implementamos um protótipo funcional em Flutter, onde a câm
 
 **Telas do protótipo podem ser vistas abaixo**
 
-![Tela de Login](images/1.jpeg)
-![Tela da Ordem](images/2.jpeg)
-![Tela de Passos](images/3.jpeg)
-![Tela de Passo 1](images/4.jpeg)
-![Tela de Passo 2](images/5.jpeg)
-![Tela de Passo 3](images/6.jpeg)
-
+<p align="center">
+  <img src="images/1.jpeg" alt="Tela de Login" width="300"/>
+  <img src="images/2.jpeg" alt="Tela da Ordem" width="300"/>
+  <img src="images/3.jpeg" alt="Tela de Passos" width="300"/>
+  <img src="images/4.jpeg" alt="Tela de Passo 1" width="300"/>
+  <img src="images/5.jpeg" alt="Tela de Passo 2" width="300"/>
+  <img src="images/6.jpeg" alt="Tela de Passo 3" width="300"/>
+</p>
 
 ## Tecnologias Utilizadas
 - **Flutter**: Criação da interface do aplicativo e interação com o usuário.
