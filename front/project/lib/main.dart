@@ -339,7 +339,7 @@ class OrderDetailScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => StepByStepGuide(),
+                      builder: (context) => StepByStepGuide(order: order),
                     ),
                   );
                 },
@@ -356,7 +356,16 @@ class OrderDetailScreen extends StatelessWidget {
   }
 }
 
+// class StepByStepGuide extends StatefulWidget {
+//   @override
+//   _StepByStepGuideState createState() => _StepByStepGuideState();
+// }
+
 class StepByStepGuide extends StatefulWidget {
+  final Map<String, dynamic> order;
+
+  StepByStepGuide({required this.order});
+
   @override
   _StepByStepGuideState createState() => _StepByStepGuideState();
 }
@@ -523,12 +532,27 @@ class _StepByStepGuideState extends State<StepByStepGuide> {
     return SizedBox.shrink();
   }
 
+  // void _nextPage() {
+  //   if (_currentPage < steps.length - 1) {
+  //     _pageController.nextPage(
+  //       duration: Duration(milliseconds: 300),
+  //       curve: Curves.easeIn,
+  //     );
+  //   }
+  // }
+
   void _nextPage() {
     if (_currentPage < steps.length - 1) {
       _pageController.nextPage(
         duration: Duration(milliseconds: 300),
         curve: Curves.easeIn,
       );
+    } else {
+      // Altere o status da ordem de serviço para "CONCLUÍDA" ao finalizar
+      widget.order['status'] = 'CONCLUÍDA';
+      widget.order['statusColor'] = 'green';
+      
+      Navigator.pop(context); // Retorna à tela principal (HomeScreen)
     }
   }
 
