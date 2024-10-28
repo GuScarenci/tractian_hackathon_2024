@@ -9,12 +9,12 @@ No estágio atual, implementamos um protótipo funcional em Flutter, onde a câm
 **Telas do protótipo podem ser vistas abaixo**
 
 <p align="center">
-  <img src="images/1.jpeg" alt="Tela de Login" width="200"/>
-  <img src="images/2.jpeg" alt="Tela da Ordem" width="200"/>
-  <img src="images/3.jpeg" alt="Tela de Passos" width="200"/>
-  <img src="images/4.jpeg" alt="Tela de Passo 1" width="200"/>
-  <img src="images/5.jpeg" alt="Tela de Passo 2" width="200"/>
-  <img src="images/6.jpeg" alt="Tela de Passo 3" width="200"/>
+  <img src="images/1.jpeg" alt="Tela de Login" width="220"/>
+  <img src="images/2.jpeg" alt="Tela da Ordem" width="220"/>
+  <img src="images/3.jpeg" alt="Tela de Passos" width="220"/>
+  <img src="images/4.jpeg" alt="Tela de Passo 1" width="220"/>
+  <img src="images/5.jpeg" alt="Tela de Passo 2" width="220"/>
+  <img src="images/6.jpeg" alt="Tela de Passo 3" width="220"/>
 </p>
 
 ## Tecnologias Utilizadas
