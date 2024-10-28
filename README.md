@@ -1,4 +1,4 @@
-[# Projeto: Prototipagem de Realidade Aumentada para Manutenção Assistida
+# Projeto: Prototipagem de Realidade Aumentada para Manutenção Assistida
 
 ## Visão Geral
 Este projeto visa desenvolver uma aplicação de Realidade Aumentada (AR) para guiar técnicos de manutenção industrial de forma eficiente. A visão final é integrar um modelo Digital Twin com AR para monitoramento e diagnóstico em tempo real, possibilitando a identificação precisa de peças, ferramentas e instruções para manutenção. No entanto, para o hackathon atual, estamos focando em um protótipo básico usando Flutter com detecção de objetos simples via ResNet.
