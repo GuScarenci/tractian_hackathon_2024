@@ -20,6 +20,8 @@ No estágio atual, implementamos um protótipo funcional em Flutter, onde a câm
 ## Tecnologias Utilizadas
 - **Flutter**: Criação da interface do aplicativo e interação com o usuário.
 - **ResNet**: Modelo de IA utilizado para detecção de objetos simples, simulando o reconhecimento de partes específicas nas máquinas.
+- **API do ChatGPT**: uso de LLM para descrever ferramentas e passos para realizar determinadas manutenções.
+- **Base de dados Relacional (futuro)**: Armazenar ordens criadas pelo LLM e usuários autorizados para realizar cada ordem.
 - **AWS S3 (futuro)**: Armazenamento da base de dados de manuais para extração automatizada de informações usando IA e LLMs.
 - **Digital Twin e AR (visão futura)**: Integração prevista para o futuro, com Digital Twin para mapeamento em tempo real e AR para guiar técnicos com superimposição de informações visuais.
 
@@ -42,14 +44,14 @@ No estágio atual, implementamos um protótipo funcional em Flutter, onde a câm
    - Retorna uma lista de passos para a ordem de serviço especificada pelo ID.
    - **Resposta**: JSON com array de passos.
 
-2. **POST /ordem/<id>/imagem**
-   - Envia uma imagem capturada para detecção de objetos e retorna a mesma imagem com bounding boxes simples (simulação de identificação de peças).
-   - **Entrada**: Arquivo de imagem.
+2. **POST /imagem/<objeto>**
+   - Envia uma imagem capturada para detecção de objetos e retorna a mesma imagem com bounding boxes simples (simulação de identificação de peças), detectando um determinado tipo de objeto.
+   - **Entrada**: Arquivo de imagem e um label.
    - **Resposta**: Imagem com bounding boxes.
 
 3. **POST /ordem**
    - Cria uma nova ordem de serviço.
-   - **Entrada**: Dados sobre o problema e o ID da máquina.
+   - **Entrada**: Dados sobre o problema, o manual da máquina em questão e a lista de ferramentas disponíveis.
    - **Resposta**: ID da nova ordem de serviço.
 
 ## Estrutura da Aplicação (Flutter)
