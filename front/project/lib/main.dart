@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:image/image.dart' as img; // Biblioteca para manipulação de imagem
 
 void main() {
   runApp(MyApp());
@@ -36,6 +37,12 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.asset(
+                'assets/logo.png', // Caminho para a imagem
+                height: 200,        // Defina a altura da imagem
+                width: 200,         // Defina a largura da imagem
+              ),
+              SizedBox(height: 24.0), // Espaço entre a imagem e o título
               Text(
                 "Login",
                 style: TextStyle(
@@ -132,19 +139,32 @@ class HomeScreen extends StatelessWidget {
       'imageUrl': 'https://bimgix.tractian.com/motor-eletrico.png',
     },
     {
-      'id': '1354a32',
-      'description': 'Troca de óleo',
+      'id': '2023b17',
+      'description': 'Trocar correia do motor',
       'equipment': 'WEG W22',
-      'status': 'ABERTA',
-      'statusColor': 'red',
-      'tools': [
-        'MAT901 (Chave de Fenda)',
-        'MAT903 (Martelo)',
-        'MAT904 (Torquímetro)',
-        'MAT906 (Chave Estrela)',
-        'MAT302 (Óleo 10W30)',
-      ],
-      'imageUrl': 'https://example.com/motor-image.jpg',
+      'status': 'ANDAMENTO',
+      'statusColor': 'orange',
+    },
+    {
+      'id': 'H7nt32',
+      'description': 'Aperto de parafuso',
+      'equipment': 'TWINSCAN',
+      'status': 'CONCLUÍDA',
+      'statusColor': 'green',
+    },
+    {
+      'id': '1354a37',
+      'description': 'Troca de óleo',
+      'equipment': 'WEG W33',
+      'status': 'CONCLUÍDA',
+      'statusColor': 'green',
+    },
+    {
+      'id': 'AA1217b',
+      'description': 'Revisão geral',
+      'equipment': 'WEG W40',
+      'status': 'CONCLUÍDA',
+      'statusColor': 'green',
     },
   ];
 
@@ -160,7 +180,7 @@ class HomeScreen extends StatelessWidget {
             Text('José Paulo', style: TextStyle(color: Colors.white)),
             CircleAvatar(
               backgroundImage: NetworkImage(
-                  'https://example.com/user-profile.jpg'),
+                  'https://t4.ftcdn.net/jpg/03/34/03/41/360_F_334034105_JGk5y6htQnTYBpu0TOr8zxlRVw2IV49e.jpg'),
             ),
           ],
         ),
@@ -345,25 +365,45 @@ class _StepByStepGuideState extends State<StepByStepGuide> {
   final PageController _pageController = PageController();
   final ImagePicker _picker = ImagePicker();
   File? _capturedImage;
-  
   Uint8List? _returnedImageBytes; // Armazena bytes da imagem retornada
   bool _isUploading = false;
   int _currentPage = 0;
 
   final List<Map<String, dynamic>> steps = [
     {'title': 'Passo 1', 'description': 'Remover plug do Dreno', 'type': 'camera', 'object': 'all'},
-    {'title': 'Passo 2', 'description': 'Desconectar mangueira', 'type': 'image', 'imageUrl': 'https://example.com/image2.jpg'},
+    {'title': 'Passo 2', 'description': 'Desconectar mangueira', 'type': 'image', 'imageUrl': 'https://thumbs.dreamstime.com/b/there-many-hydraulic-hoses-crane-lifting-control-system-engine-236815756.jpg'},
     {'title': 'Passo 3', 'description': 'Limpar o filtro de óleo', 'type': 'text', 'textContent': 'Certifique-se de limpar o filtro de óleo adequadamente para evitar obstruções.'},
   ];
 
   Future<void> _takePicture(String object) async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
+      File fixedImage = await _fixImageOrientation(File(pickedFile.path));
       setState(() {
-        _capturedImage = File(pickedFile.path);
+        _capturedImage = fixedImage;
         _returnedImageBytes = null; // Limpa imagem retornada anterior, se houver
       });
       await _uploadImage(object); // Envia a imagem após capturá-la
+    }
+  }
+
+  // Método para corrigir a orientação da imagem
+  Future<File> _fixImageOrientation(File imageFile) async {
+    final originalBytes = await imageFile.readAsBytes();
+    final decodedImage = img.decodeImage(originalBytes);
+
+    if (decodedImage != null) {
+      final fixedImage = img.copyRotate(decodedImage, 90); // Rotaciona a imagem em 90 graus
+      final fixedImageBytes = img.encodeJpg(fixedImage); // Codifica a imagem corrigida como JPEG
+
+      // Salva a imagem corrigida em um novo arquivo temporário
+      final tempDir = await Directory.systemTemp.createTemp();
+      final correctedImageFile = File('${tempDir.path}/fixed_image.jpg')
+        ..writeAsBytesSync(fixedImageBytes);
+
+      return correctedImageFile;
+    } else {
+      return imageFile; // Retorna a imagem original se não puder decodificar
     }
   }
 
@@ -409,6 +449,7 @@ class _StepByStepGuideState extends State<StepByStepGuide> {
     if (step['type'] == 'camera') {
       return Column(
         children: [
+          // Verifica se temos uma imagem retornada para exibir
           _returnedImageBytes != null
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(12.0),
@@ -419,6 +460,7 @@ class _StepByStepGuideState extends State<StepByStepGuide> {
                     fit: BoxFit.cover,
                   ),
                 )
+              // Caso não tenha imagem retornada, exibe a imagem capturada
               : _capturedImage != null
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(12.0),
@@ -429,6 +471,7 @@ class _StepByStepGuideState extends State<StepByStepGuide> {
                         fit: BoxFit.cover,
                       ),
                     )
+                  // Caso não tenha imagem capturada, exibe uma área em branco
                   : Container(
                       height: 300,
                       width: double.infinity,
