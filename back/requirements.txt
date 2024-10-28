@@ -1,5 +1,10 @@
-Flask==2.3.2
-requests==2.31.0
-waitress==2.1.2
-psycopg2==2.9.6
-boto3==1.35.48
+torch
+Flask
+requests
+waitress
+psycopg2
+boto3
+pillow 
+pypdf
+transformers
+langchain-openai

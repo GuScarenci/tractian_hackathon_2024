@@ -18,12 +18,23 @@
     in {
       devShells.default = pkgs.mkShell {
         packages = with pkgs; [
-          (pkgs.python312.withPackages (python-pkgs: [
+          (pkgs.python311.withPackages (python-pkgs: [
             python-pkgs.flask
             python-pkgs.requests
             python-pkgs.waitress
             python-pkgs.psycopg2
             python-pkgs.boto3
+            python-pkgs.opencv4
+            python-pkgs.transformers
+            python-pkgs.pytorch
+            python-pkgs.langchain
+            python-pkgs.openai
+            python-pkgs.pypdf
+            python-pkgs.datasets
+            python-pkgs.torchmetrics
+            python-pkgs.albumentations
+            python-pkgs.timm
+            python-pkgs.accelerate
           ]))
 
           flutter
