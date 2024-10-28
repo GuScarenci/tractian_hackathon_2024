@@ -1,125 +1,346 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      home: LoginScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class LoginScreen extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text('Login'),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.emailAddress,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            SizedBox(height: 16.0),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+              ),
+              obscureText: true,
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                String email = _emailController.text;
+                String password = _passwordController.text;
+                print('Email: $email, Password: $password');
+
+                // Navegar para a próxima página
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              },
+              child: Text('Login'),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+class HomeScreen extends StatelessWidget {
+  final List<Map<String, dynamic>> orders = [
+    {
+      'id': '1354a32',
+      'description': 'Troca de óleo',
+      'equipment': 'WEG W22',
+      'status': 'ABERTA',
+      'statusColor': 'red',
+      'tools': [
+        'MAT901 (Chave de Fenda)',
+        'MAT903 (Martelo)',
+        'MAT904 (Torquímetro)',
+        'MAT906 (Chave Estrela)',
+        'MAT302 (Óleo 10W30)',
+      ],
+      'imageUrl': 'https://example.com/motor-image.jpg',
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('José Paulo'),
+            CircleAvatar(
+              backgroundImage: NetworkImage(
+                  'https://example.com/user-profile.jpg'),
+            ),
+          ],
+        ),
+      ),
+      body: ListView.builder(
+        padding: EdgeInsets.all(8.0),
+        itemCount: orders.length,
+        itemBuilder: (context, index) {
+          final order = orders[index];
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OrderDetailScreen(order: order),
+                ),
+              );
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.blue, width: 2),
+              ),
+              color: Colors.blue[50],
+              margin: EdgeInsets.symmetric(vertical: 8.0),
+              child: Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Ordem de Serviço ${order['id']}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      order['description'],
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    Text(
+                      order['equipment'],
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text(
+                        order['status'],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: order['statusColor'] == 'red'
+                              ? Colors.red
+                              : order['statusColor'] == 'orange'
+                                  ? Colors.orange
+                                  : Colors.green,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class OrderDetailScreen extends StatelessWidget {
+  final Map<String, dynamic> order;
+
+  OrderDetailScreen({required this.order});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(order['description']),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              order['description'],
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
+            ),
+            Text(
+              order['equipment'],
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 16),
+            Image.network(
+              order['imageUrl'],
+              height: 100,
+            ),
+            SizedBox(height: 16),
+            Text(
+              'FERRAMENTAS',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(height: 8),
+            ...order['tools'].map<Widget>((tool) => Text(
+                  tool,
+                  style: TextStyle(fontSize: 14),
+                )),
+            Spacer(),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StepByStepGuide(),
+                    ),
+                  );
+                },
+                child: Text('Iniciar Guia'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class StepByStepGuide extends StatefulWidget {
+  @override
+  _StepByStepGuideState createState() => _StepByStepGuideState();
+}
+
+class _StepByStepGuideState extends State<StepByStepGuide> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  final List<Map<String, dynamic>> steps = [
+    {'title': 'Passo 1', 'description': 'Remover plug do Dreno', 'type': 'camera'},
+    {'title': 'Passo 2', 'description': 'Desconectar mangueira', 'type': 'image', 'imageUrl': 'https://example.com/image2.jpg'},
+    {'title': 'Passo 3', 'description': 'Limpar o filtro de óleo', 'type': 'text', 'textContent': 'Certifique-se de limpar o filtro de óleo adequadamente para evitar obstruções.'},
+  ];
+
+  void _nextPage() {
+    if (_currentPage < steps.length - 1) {
+      _pageController.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+    }
+  }
+
+  Widget _buildStepContent(Map<String, dynamic> step) {
+    switch (step['type']) {
+      case 'camera':
+        return Container(
+          color: Colors.grey[300],
+          height: 200,
+          width: double.infinity,
+          child: Center(
+            child: Icon(
+              Icons.camera_alt,
+              size: 50,
+              color: Colors.grey[700],
+            ),
+          ),
+        );
+      case 'image':
+        return Image.network(
+          step['imageUrl'],
+          height: 200,
+          width: double.infinity,
+          fit: BoxFit.cover,
+        );
+      case 'text':
+        return Text(
+          step['textContent'],
+          style: TextStyle(fontSize: 16),
+          textAlign: TextAlign.center,
+        );
+      default:
+        return SizedBox.shrink();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Guia de Manutenção'),
+      ),
+      body: PageView.builder(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _currentPage = index;
+          });
+        },
+        itemCount: steps.length,
+        itemBuilder: (context, index) {
+          final step = steps[index];
+          return Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  step['title'],
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  step['description'],
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(height: 16),
+                _buildStepContent(step),
+                Spacer(),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: _nextPage,
+                    child: Text(_currentPage < steps.length - 1
+                        ? 'Próximo'
+                        : 'Concluir'),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
